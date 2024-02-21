@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "npx community-solid-server -c config.json -f data"
+  },
+  "dependencies": {
+    "@solid/community-server": "^7.0.4",
+    "easy-penny-pod-inspector": "^0.1.0"
+  }
+}
