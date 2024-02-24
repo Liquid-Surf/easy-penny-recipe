@@ -24,7 +24,7 @@ jobs:
         BASE_URL: ${{ secrets.BASE_URL }}
       run: |
         ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$SERVER_IP << 'EOF'
-          cd /home/pod-liquid-surf/easy-penny-recipe
+          cd /home/pod/easy-penny-recipe
           git pull
           docker-compose up -d --build
         EOF
