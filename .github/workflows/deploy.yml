@@ -29,5 +29,5 @@ jobs:
           git pull
           echo var_${SSH_USERNAME} >> test
           echo sec_${{ secrets.BASE_URL}} >> test
-          docker-compose up -d --build
+          CSS_BASE_URL=${{ secrets.BASE_URL }} docker-compose up -d --build
         EOF
