@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "npx community-solid-server -c config.json -f data",
-    "start:docker": "npx community-solid-server -c config.json -f /data -p 3056 -b https://pod.liquid.surf"
+    "start:docker": "npx community-solid-server -c config.json -f /data -p 3056"
   },
   "dependencies": {
     "@solid/community-server": "^7.0.4",

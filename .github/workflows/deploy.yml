@@ -27,5 +27,5 @@ jobs:
         	cd /home/${{secrets.SSH_USERNAME}}
           cd easy-penny-recipe || git clone https://github.com/liquid-surf/easy-penny-recipe && cd easy-penny-recipe
           git pull
-          CSS_BASE_URL=${{secrets.BASE_URL}} docker-compose up -d --build
+          BASE_URL=${{secrets.BASE_URL}} docker-compose up -d --build
         EOF
