@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Create account</title>
+  <link rel="stylesheet" href="http://localhost:3066/.well-known/css/styles/main.css?v=7" type="text/css">
+  <script type="text/javascript" src="http://localhost:3066/account/util.js"></script>
+</head>
+<body>
+  <header>
+    <a href="http://localhost:3066/"><img src="http://localhost:3066/.well-known/css/images/solid.svg" alt="[Solid logo]" /></a>
+    <h1>Community Solid Server</h1>
+  </header>
+  <main>
+    <h1>Create account</h1>
+<form method="post" id="mainForm" action="http://localhost:3066/.account/login/password/register/">
+  <p class="error" id="error"></p>
+
+  <fieldset>
+    <p>Choose the credentials you want to use to log in to this server in the future</p>
+    <ol>
+      <li>
+        <label for="email">Email:</label>
+        <input id="email" type="email" name="email" autofocus>
+      </li>
+      <li>
+        <label for="password">Password:</label>
+        <input id="password" type="password" name="password">
+      </li>
+      <li>
+        <label for="confirmPassword">Confirm password:</label>
+        <input id="confirmPassword" type="password" name="confirmPassword">
+      </li>
+    </ol>
+  </fieldset>
+
+  <p class="actions">
+    <button type="submit" name="submit" disabled>Register Form</button>
+    <button type="button" id="registerButton" name="submit"  onclick="submitForm()" disabled>Register JS</button>
+    <button type="button" id="login-link">Back</button>
+  </p>
+</form>
+
+
+<script>
+  let passwordCreateUrl;
+  let oidcLocation;
+
+	function submitForm() {
+   var form = document.getElementById('mainForm');
+    var formData = new FormData(form);
+
+    // Optionally disable the button to prevent multiple submissions
+    document.getElementById('registerButton').disabled = true;
+
+    fetch('http://localhost:3066/.account/login/password/register/', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      // Handle success, e.g., display a success message or redirect
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      // Handle error, e.g., display error message
+    })
+    .finally(() => {
+      // Optionally re-enable the button after the fetch completes
+      document.getElementById('registerButton').disabled = false;
+    });
+	}
+
+  (async() => {
+    let controls = await fetchControls('http://localhost:3066/.account/');
+
+    setRedirectClick('login-link', controls.html.password.login);
+
+    addPostListener(async() => {
+      validatePasswordConfirmation('password');
+
+      // Caching account in case there is an error adding the password login
+      if (!passwordCreateUrl) {
+        const res = await fetch(controls.account.create, {method: 'POST'});
+        const json = await res.json();
+        // Will only be defined if we are in a OIDC interaction
+        oidcLocation = json.location;
+
+        // Now with cookie
+        controls = await fetchControls('http://localhost:3066/.account/');
+        passwordCreateUrl = controls.password.create;
+      }
+
+      await postJsonForm(passwordCreateUrl);
+
+      // In case there is an OIDC location, we need to fetch it to force the OIDC library to go to the next step
+      if (oidcLocation) {
+        // Doing this after creating the password login to prevent incomplete accounts
+        await fetch(oidcLocation);
+      }
+
+      // We go to the account page even if we are in a OIDC interaction
+      // as the user would need to link a WebID anyway before an interaction can be completed.
+      location.href = controls.html.account.account;
+    });
+  })();
+</script>
+
+  </main>
+  <footer>
+    <p>
+      ©2019–2023 <a href="https://inrupt.com/">Inrupt Inc.</a>
+      and <a href="https://www.imec-int.com/">imec</a>
+    </p>
+  </footer>
+</body>
+</html>
+
+
+
