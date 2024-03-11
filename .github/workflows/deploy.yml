@@ -24,8 +24,10 @@ jobs:
         BASE_URL: ${{ secrets.BASE_URL }}
       run: |
         ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$SERVER_IP << 'EOF'
+          echo "START $( date +%y%m%d_%H-%M-%S-%N )" >> ./last_github_action.log
         	cd /home/${{secrets.SSH_USERNAME}}
           cd easy-penny-recipe || git clone https://github.com/liquid-surf/easy-penny-recipe && cd easy-penny-recipe
           git pull
           BASE_URL=${{secrets.BASE_URL}} docker-compose up -d --build
+          echo "STOP $( date +%y%m%d_%H-%M-%S-%N )" >> ./last_github_action.log
         EOF
