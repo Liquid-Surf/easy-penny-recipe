@@ -35,6 +35,8 @@ WORKDIR /community-server
 COPY --from=build /community-server/package.json .
 COPY --from=build /community-server/node_modules ./node_modules
 COPY --from=build /community-server/config.json .
+COPY ./templates ./templates
+COPY ./styles ./styles
 
 
 # Informs Docker that the container listens on the specified network port at runtime
