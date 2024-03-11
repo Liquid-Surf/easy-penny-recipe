@@ -24,10 +24,12 @@ jobs:
         BASE_URL: ${{ secrets.BASE_URL }}
       run: |
         ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$SERVER_IP << 'EOF'
-          echo "START $( date +%y%m%d_%H-%M-%S-%N )" >> $HOME/$( date +%y%m%d_%H-%M-%S-%N )_gh_action.err
-        	cd /home/${{secrets.SSH_USERNAME}} 2>> $HOME/$( date +%y%m%d_%H-%M-%S-%N )_gh_action.err
-          cd easy-penny-recipe || git clone https://github.com/liquid-surf/easy-penny-recipe && cd easy-penny-recipe 2>> $HOME/$( date +%y%m%d_%H-%M-%S-%N )_gh_action.err
-          git pull 2>> $HOME/$( date +%y%m%d_%H-%M-%S-%N )_gh_action.err
-          BASE_URL=${{secrets.BASE_URL}} docker-compose up -d --build 2>> $HOME/$( date +%y%m%d_%H-%M-%S-%N )_gh_action.err
-          echo "STOP $( date +%y%m%d_%H-%M-%S-%N )" >> $HOME/$( date +%y%m%d_%H-%M-%S-%N )_gh_action.err
+        	LOG_FILE="$HOME/$( date +%y%m%d_%H-%M-%S-%N )_gh_action.err"
+          echo "START $( date +%y%m%d_%H-%M-%S-%N )" >> $LOG_FILE
+        	cd /home/${{secrets.SSH_USERNAME}} 2>> $LOG_FILE
+          cd easy-penny-recipe || git clone https://github.com/liquid-surf/easy-penny-recipe && cd easy-penny-recipe 2>> $LOG_FILE
+          git fetch origin 2>> $LOG_FILE
+          git reset --hard origin/main 2>> $LOG_FILE
+          BASE_URL=${{secrets.BASE_URL}} docker-compose up -d --build 2>> $LOG_FILE
+          echo "STOP $( date +%y%m%d_%H-%M-%S-%N )" >> $LOG_FILE
         EOF
