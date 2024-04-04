@@ -30,6 +30,6 @@ jobs:
           cd easy-penny-recipe || git clone https://github.com/liquid-surf/easy-penny-recipe && cd easy-penny-recipe 2>> $LOG_FILE
           git fetch origin 2>> $LOG_FILE
           git reset --hard origin/main 2>> $LOG_FILE
-          BASE_URL=${{secrets.BASE_URL}} docker-compose up -d --build 2>> $LOG_FILE
+          BASE_URL=${{secrets.BASE_URL}} docker compose up -d --build 2>> $LOG_FILE
           echo "STOP $( date +%y%m%d_%H-%M-%S-%N )" >> $LOG_FILE
         EOF
