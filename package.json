@@ -4,7 +4,7 @@
     "start:docker": "npx community-solid-server -c config.json -f /data -p 3056"
   },
   "dependencies": {
-    "@solid/community-server": "^7.0.4",
-    "easy-penny-pod-inspector": "^0.1.5"
+    "@solid/community-server": "^7.0.5",
+    "easy-penny-pod-inspector": "^0.1.9"
   }
 }
