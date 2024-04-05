@@ -5,6 +5,6 @@
   },
   "dependencies": {
     "@solid/community-server": "^7.0.5",
-    "easy-penny-pod-inspector": "^0.1.9"
+    "easy-penny-pod-inspector": "^0.1.10"
   }
 }
