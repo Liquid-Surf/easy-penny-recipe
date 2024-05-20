@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "@solid/community-server": "^7.0.5",
+    "css-fedcm-module": "^7.0.2",
     "easy-penny-pod-inspector": "^0.1.10"
   }
 }
